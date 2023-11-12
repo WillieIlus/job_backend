@@ -3,8 +3,8 @@ from rest_framework import serializers
 from .models import Company
 
 class CompanySerializer(serializers.ModelSerializer):
-    get_location = serializers.CharField(source='location')
-    get_category = serializers.CharField(source='category')
+    get_location = serializers.CharField(source='location', required=False)
+    get_category = serializers.CharField(source='category', required=False)
 
     class Meta:
         model = Company
