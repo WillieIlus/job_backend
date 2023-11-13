@@ -4,13 +4,14 @@ from .models import  Job, JobApplication, Impression, Click
 
 
 class JobSerializer(serializers.ModelSerializer):
-    timesince = serializers.SerializerMethodField()
+    timesince = serializers.SerializerMethodField(required=False)
+    get_user = serializers.CharField(source='user', required=False)
+    get_company = serializers.CharField(source='company', required=False)
     get_location = serializers.CharField(source='location', required=False)
     get_category = serializers.CharField(source='category', required=False)
     get_job_type = serializers.CharField(source='job_type', required=False)
     get_created_at = serializers.DateTimeField(source='created_at', required=False)
     days_left = serializers.SerializerMethodField(required=False)
-
 
     class Meta:
         model = Job
@@ -22,6 +23,7 @@ class JobSerializer(serializers.ModelSerializer):
 
     def get_days_left(self, obj):
         return obj.days_left()
+
 
 class JobApplicationSerializer(serializers.ModelSerializer):
     class Meta:
