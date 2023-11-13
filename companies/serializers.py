@@ -5,6 +5,7 @@ from .models import Company
 class CompanySerializer(serializers.ModelSerializer):
     get_location = serializers.CharField(source='location', required=False)
     get_category = serializers.CharField(source='category', required=False)
+    get_user = serializers.CharField(source='user', required=False)
 
     class Meta:
         model = Company
