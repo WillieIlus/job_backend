@@ -40,25 +40,19 @@ class Job(models.Model):
         (FREELANCE, 'Freelance'),
     ]
     # Currency
+    KSH = 'KSH'
     USD = 'USD'
+    UGH = 'UGH'
+    TSH = 'TSH'
     EUR = 'EUR'
     GBP = 'GBP'
-    CAD = 'CAD'
-    AUD = 'AUD'
-    NZD = 'NZD'
-    CHF = 'CHF'
-    JPY = 'JPY'
-    CNY = 'CNY'
     CURRENCY_CHOICES = [
+        (KSH, 'Kenya Shilling'),
         (USD, 'US Dollar'),
+        (UGH, 'Uganda Shilling'),
+        (TSH, 'Tanzania Shilling'),
         (EUR, 'Euro'),
         (GBP, 'British Pound'),
-        (CAD, 'Canadian Dollar'),
-        (AUD, 'Australian Dollar'),
-        (NZD, 'New Zealand Dollar'),
-        (CHF, 'Swiss Franc'),
-        (JPY, 'Japanese Yen'),
-        (CNY, 'Chinese Yuan'),
     ]
 
     PER_HOUR = 'PH'
@@ -68,6 +62,18 @@ class Job(models.Model):
     PER_YEAR = 'PY'
     SALARY_TYPE_CHOICES = [
         (PER_HOUR, 'Per Hour'),
+        (PER_DAY, 'Per Day'),
+        (PER_WEEK, 'Per Week'),
+        (PER_MONTH, 'Per Month'),
+        (PER_YEAR, 'Per Year'),
+    ]
+
+    PER_DAY = 'PD'
+    PER_WEEK = 'PW'
+    PER_MONTH = 'PM'
+    PER_YEAR = 'PY'
+
+    WORK_HOUR_CHOICES = [
         (PER_DAY, 'Per Day'),
         (PER_WEEK, 'Per Week'),
         (PER_MONTH, 'Per Month'),
@@ -95,11 +101,12 @@ class Job(models.Model):
 
     job_type = models.CharField(max_length=20, choices=JOB_TYPE_CHOICES, default=FULL_TIME, blank=True, null=True)
     salary = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
-    salary_type = models.CharField(max_length=2, choices=SALARY_TYPE_CHOICES, default=PER_YEAR, blank=True, null=True )
-    currency = models.CharField(max_length=3, choices=CURRENCY_CHOICES, default=USD, blank=True, null=True)
+    salary_type = models.CharField(max_length=2, choices=SALARY_TYPE_CHOICES, default=PER_MONTH, blank=True, null=True )
+    currency = models.CharField(max_length=3, choices=CURRENCY_CHOICES, default=KSH, blank=True, null=True)
     openings = models.IntegerField(blank=True, null=True)
     work_experience = models.IntegerField(blank=True, null=True)
     work_hours = models.IntegerField(blank=True, null=True)
+    work_hour_type = models.CharField(max_length=3, choices=WORK_HOUR_CHOICES, default=PER_DAY, blank=True, null=True)
     education_level = models.CharField(max_length=200, blank=True, null=True)
     applicants = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='job_applicants', blank=True)
     view_count = models.IntegerField(default=0, blank=True, null=True)
@@ -122,8 +129,14 @@ class Job(models.Model):
     def get_job_type_display(self):
         return dict(self.JOB_TYPE_CHOICES)[self.job_type]
 
+        
     def __str__(self):
-        return self.title # + ' - ' + self.id
+    return self.title + ' - ' + str(self.id) 
+
+
+    # def __str__(self):
+    #     # Example handling None case for title
+    #     return str(self.title) if self.title is not None else "Untitled Job"
 
     def get_absolute_url(self):
         return reverse('jobs:detail', kwargs={'slug': self.slug})
@@ -176,7 +189,7 @@ class JobApplication(models.Model):
         ordering = ['-created_at']
 
     def __str__(self):
-        return self.job.title # + ' - ' + self.user.username
+        return self.job.title  + ' - ' + self.job.id
 
     def get_resume_url(self):
         return reverse('jobs:resume', kwargs={'pk': self.pk})

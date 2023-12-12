@@ -8,13 +8,15 @@ from django.utils.text import slugify
 
 class Country(models.Model):
     name = models.CharField(max_length=200)
-    slug = models.SlugField(max_length=200, unique=True)
+    slug = models.SlugField(max_length=200, unique=True, blank=True, null=True)
     code = models.CharField(max_length=200, blank=True, null=True)
     flag = models.ImageField(upload_to='countries/flags/', blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         verbose_name_plural = "Countries"
-        ordering = ['name']
+        ordering = ['-created_at', 'name']
 
     def __str__(self):
         return self.name
@@ -26,13 +28,15 @@ class Country(models.Model):
 
 class Location(models.Model):
     name = models.CharField(max_length=200)
-    slug = models.SlugField(max_length=200, unique=True)
+    slug = models.SlugField(max_length=200, unique=True, blank=True, null=True)
     country = models.ForeignKey(Country, on_delete=models.CASCADE, blank=True, null=True)
     flag = models.ImageField(upload_to='locations/flags/', blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         verbose_name_plural = "Locations"
-        ordering = ['name']
+        ordering = ['-created_at', '-name']
 
     def __str__(self):
         return self.name

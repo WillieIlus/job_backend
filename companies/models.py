@@ -33,14 +33,25 @@ class Company(models.Model):
         verbose_name_plural = _('Companies')
         ordering = ('-created_at','-updated_at','name')
 
+    # def __str__(self):
+    #     return self.name
+
     def __str__(self):
-        return self.name
+        # Example handling None case for title
+        return str(self.name) if self.name is not None else "Untitled Job"
 
     def get_absolute_url(self):
         return reverse('companies:detail', kwargs={'slug': self.slug})
 
+    # def save(self, *args, **kwargs):
+    #     self.slug = slugify(self.name)
+    #     super(Company, self).save(*args, **kwargs)
+
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.name)
+        if not self.slug:
+            self.slug = slugify(self.name)
+            while Company.objects.filter(slug=self.slug).exists():
+                self.slug = f'{slugify(self.name)}-{uuid.uuid4().hex[:6]}'
         super(Company, self).save(*args, **kwargs)
 
     def get_jobs(self):

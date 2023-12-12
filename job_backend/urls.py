@@ -12,6 +12,8 @@ urlpatterns = [
     path('categories/', include(('categories.urls', 'categories'), namespace='categories')),
     path('locations/', include(('locations.urls', 'locations'), namespace='locations')),
     path('jobs/', include(('jobs.urls', 'jobs'), namespace='jobs')),
+    # path('plans/', include(('plans.urls', 'plans'), namespace='plans')),
+    path('payments/', include(('payments.urls', 'payments'), namespace='payments')),
     re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT, }),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) \
               + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -12,6 +12,13 @@ class JobSerializer(serializers.ModelSerializer):
     get_job_type = serializers.CharField(source='job_type', required=False)
     get_created_at = serializers.DateTimeField(source='created_at', required=False)
     days_left = serializers.SerializerMethodField(required=False)
+    plan_title = serializers.ReadOnlyField(source='plan.title')
+    # expired = serializers.SerializerMethodField(required=False)
+    # price = serializers.SerializerMethodField(required=False)
+    views_count = serializers.IntegerField(read_only=True)
+    click_count = serializers.IntegerField(read_only=True)
+    # expires_soon = serializers.SerializerMethodField(required=False)
+    # time_since = serializers.SerializerMethodField(required=False)
 
     class Meta:
         model = Job

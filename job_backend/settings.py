@@ -31,7 +31,8 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'corsheaders',
     'djoser',
-    ''
+    'django_daraja',
+    'django_filters',
 
     'accounts',
     'jobs',
@@ -47,6 +48,7 @@ INSTALLED_APPS = [
     # 'notifications',
     'locations',
     'categories',
+    'payments',
     'plans',
 ]
 
@@ -106,10 +108,15 @@ WSGI_APPLICATION = 'job_backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'job_backend_database',
+        'USER': 'admin',
+        'PASSWORD': 'tungsten',
+        'HOST': 'localhost',  # Or an IP Address that your DB is hosted on
+        'PORT': '3306',  # Default MySQL port
     }
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators

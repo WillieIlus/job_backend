@@ -45,6 +45,15 @@ coverage.xml
 # Django stuff:
 *.log
 *.pot
+**/migrations/
+!**/migrations/__init__.py
+*.sqlite3
+*.db
+
+# MySQL database files
+*.sql
+*.sql.gz
+*.dump
 
 # Sphinx documentation
 docs/_build/
@@ -71,7 +80,3 @@ ENV/
 
 # mkdocs documentation
 /site
-
-# Exclude all migration files except __init__.py
-**/migrations/ # Exclude all migration directories
-!**/migrations/__init__.py # Allow __init__.py within migration directories
